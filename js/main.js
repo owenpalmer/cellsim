@@ -8,15 +8,6 @@ const growth = new GrowthManager(grid);
 const seedInput = document.getElementById('seed');
 const clearButton = document.getElementById('clear');
 const cellTypeSelect = document.getElementById('selected-type');
-
-// Add simulation controls to HTML
-const controlsDiv = document.getElementById('controls');
-controlsDiv.insertAdjacentHTML('beforeend', `
-    <button id="play-pause">Play</button>
-    <button id="step">Step</button>
-    <span id="generation">Generation: 0</span>
-`);
-
 const playPauseButton = document.getElementById('play-pause');
 const stepButton = document.getElementById('step');
 const generationSpan = document.getElementById('generation');
@@ -28,11 +19,75 @@ let generation = 0;
 let lastStepTime = 0;
 const stepInterval = 100; // ms between generations
 
+// Draggable panels
+const panels = document.querySelectorAll('.panel');
+let activePanel = null;
+let initialX = 0;
+let initialY = 0;
+let currentX = 0;
+let currentY = 0;
+
+// Initialize panel positions from localStorage or defaults
+panels.forEach(panel => {
+    const savedPos = localStorage.getItem(`${panel.id}-position`);
+    if (savedPos) {
+        const [left, top] = savedPos.split(',');
+        panel.style.left = left;
+        panel.style.top = top;
+        panel.style.right = 'auto'; // Clear any right positioning
+    }
+    
+    const header = panel.querySelector('.panel-header');
+    header.addEventListener('mousedown', e => {
+        activePanel = panel;
+        initialX = e.clientX - panel.offsetLeft;
+        initialY = e.clientY - panel.offsetTop;
+        panel.classList.add('dragging');
+    });
+});
+
+document.addEventListener('mousemove', e => {
+    if (activePanel) {
+        e.preventDefault();
+        currentX = e.clientX - initialX;
+        currentY = e.clientY - initialY;
+        
+        // Keep panel within window bounds
+        currentX = Math.max(0, Math.min(window.innerWidth - activePanel.offsetWidth, currentX));
+        currentY = Math.max(0, Math.min(window.innerHeight - activePanel.offsetHeight, currentY));
+        
+        activePanel.style.left = currentX + 'px';
+        activePanel.style.top = currentY + 'px';
+        activePanel.style.right = 'auto';
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    if (activePanel) {
+        activePanel.classList.remove('dragging');
+        // Save position
+        localStorage.setItem(`${activePanel.id}-position`, 
+            `${activePanel.style.left},${activePanel.style.top}`);
+        activePanel = null;
+    }
+});
+
+// Handle probability matrix inputs
+const probabilityInputs = document.querySelectorAll('input[data-parent]');
+probabilityInputs.forEach(input => {
+    input.addEventListener('change', () => {
+        const parent = parseInt(input.dataset.parent);
+        const child = parseInt(input.dataset.child);
+        const value = parseFloat(input.value);
+        growth.setProbability(parent, child, value);
+    });
+});
+
 // Track if mouse is down for drawing
 let isMouseDown = false;
 let lastX = -1, lastY = -1;
 
-// Handle mouse input
+// Handle mouse input for cell placement
 canvas.addEventListener('mousedown', (e) => {
     isMouseDown = true;
     handleMouseInput(e);

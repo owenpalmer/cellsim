@@ -6,23 +6,39 @@ body {
     font-family: Arial, sans-serif;
 }
 
-#controls {
+.panel {
     position: fixed;
-    top: 10px;
-    left: 10px;
     z-index: 1;
     background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
     border-radius: 5px;
     color: white;
+    border: 1px solid #333;
+    user-select: none;
+}
+
+#main-controls {
+    top: 10px;
+    left: 10px;
+}
+
+#probability-panel {
+    top: 10px;
+    right: 10px;
+}
+
+.panel-header {
+    padding: 8px 12px;
+    background: #222;
+    border-radius: 5px 5px 0 0;
+    cursor: move;
+    font-weight: bold;
+}
+
+.panel-content {
+    padding: 15px;
     display: flex;
     gap: 15px;
     align-items: center;
-    border: 1px solid #333;
-}
-
-#controls > * {
-    margin: 0;
 }
 
 #cell-types {
@@ -62,12 +78,47 @@ input, select {
 }
 
 #generation {
-    margin-left: 10px;
     color: #aaa;
+}
+
+/* Probability Matrix Styling */
+table {
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+th, td {
+    padding: 4px 6px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+th {
+    background: #222;
+    font-weight: normal;
+}
+
+td input[type="number"] {
+    width: 50px;
+    text-align: center;
+    padding: 2px 4px;
+}
+
+/* Hide number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 canvas {
     position: fixed;
     top: 0;
     left: 0;
+}
+
+/* Dragging styles */
+.panel.dragging {
+    opacity: 0.8;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }

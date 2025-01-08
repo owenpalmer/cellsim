@@ -5,20 +5,75 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="controls">
-        <input type="number" id="seed" placeholder="Random Seed" value="1234">
-        <button id="clear">Clear Grid</button>
-        <div id="cell-types">
-            <label>Cell Type:</label>
-            <select id="selected-type">
-                <option value="1">Type 1</option>
-                <option value="2">Type 2</option>
-                <option value="3">Type 3</option>
-                <option value="4">Type 4</option>
-                <option value="5">Type 5</option>
-            </select>
+    <div id="main-controls" class="panel">
+        <div class="panel-header">Controls</div>
+        <div class="panel-content">
+            <input type="number" id="seed" placeholder="Random Seed" value="1234">
+            <button id="clear">Clear Grid</button>
+            <button id="play-pause">Play</button>
+            <button id="step">Step</button>
+            <span id="generation">Generation: 0</span>
+            <div id="cell-types">
+                <label>Cell Type:</label>
+                <select id="selected-type">
+                    <option value="1">Type 1</option>
+                    <option value="2">Type 2</option>
+                    <option value="3">Type 3</option>
+                    <option value="4">Type 4</option>
+                    <option value="5">Type 5</option>
+                </select>
+            </div>
         </div>
     </div>
+
+    <div id="probability-panel" class="panel">
+        <div class="panel-header">Growth Probabilities</div>
+        <div class="panel-content">
+            <table>
+                <tr>
+                    <th>Parent</th>
+                    <th>→1</th>
+                    <th>→2</th>
+                    <th>→3</th>
+                    <th>→4</th>
+                    <th>→5</th>
+                </tr>
+                <tr>
+                    <td>Type 1</td>
+                    <td><input type="number" data-parent="1" data-child="1" min="0" max="1" step="0.1" value="0.4"></td>
+                    <td><input type="number" data-parent="1" data-child="2" min="0" max="1" step="0.1" value="0.3"></td>
+                    <td><input type="number" data-parent="1" data-child="3" min="0" max="1" step="0.1" value="0.2"></td>
+                    <td><input type="number" data-parent="1" data-child="4" min="0" max="1" step="0.1" value="0.1"></td>
+                    <td><input type="number" data-parent="1" data-child="5" min="0" max="1" step="0.1" value="0.0"></td>
+                </tr>
+                <tr>
+                    <td>Type 2</td>
+                    <td><input type="number" data-parent="2" data-child="1" min="0" max="1" step="0.1" value="0.2"></td>
+                    <td><input type="number" data-parent="2" data-child="2" min="0" max="1" step="0.1" value="0.4"></td>
+                    <td><input type="number" data-parent="2" data-child="3" min="0" max="1" step="0.1" value="0.2"></td>
+                    <td><input type="number" data-parent="2" data-child="4" min="0" max="1" step="0.1" value="0.1"></td>
+                    <td><input type="number" data-parent="2" data-child="5" min="0" max="1" step="0.1" value="0.1"></td>
+                </tr>
+                <tr>
+                    <td>Type 3</td>
+                    <td><input type="number" data-parent="3" data-child="1" min="0" max="1" step="0.1" value="0.1"></td>
+                    <td><input type="number" data-parent="3" data-child="2" min="0" max="1" step="0.1" value="0.2"></td>
+                    <td><input type="number" data-parent="3" data-child="3" min="0" max="1" step="0.1" value="0.4"></td>
+                    <td><input type="number" data-parent="3" data-child="4" min="0" max="1" step="0.1" value="0.2"></td>
+                    <td><input type="number" data-parent="3" data-child="5" min="0" max="1" step="0.1" value="0.1"></td>
+                </tr>
+                <tr>
+                    <td>Type 4</td>
+                    <td><input type="number" data-parent="4" data-child="1" min="0" max="1" step="0.1" value="0.0"></td>
+                    <td><input type="number" data-parent="4" data-child="2" min="0" max="1" step="0.1" value="0.1"></td>
+                    <td><input type="number" data-parent="4" data-child="3" min="0" max="1" step="0.1" value="0.2"></td>
+                    <td><input type="number" data-parent="4" data-child="4" min="0" max="1" step="0.1" value="0.4"></td>
+                    <td><input type="number" data-parent="4" data-child="5" min="0" max="1" step="0.1" value="0.3"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     <canvas id="grid"></canvas>
     
     <script src="js/grid.js"></script>
