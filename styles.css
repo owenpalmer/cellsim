@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+#controls {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+#controls > * {
+    margin: 0 5px;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
