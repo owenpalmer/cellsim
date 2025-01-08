@@ -79,7 +79,7 @@ probabilityInputs.forEach(input => {
         const parent = parseInt(input.dataset.parent);
         const child = parseInt(input.dataset.child);
         const value = parseFloat(input.value);
-        growth.setProbability(parent, child, value);
+        growth.setWeight(parent, child, value);
     });
 });
 
