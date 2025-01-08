@@ -5,11 +5,11 @@ class Renderer {
         this.grid = grid;
         this.cellColors = {
             0: '#111', // Empty cell
-            1: '#4a9', // Type 1 - Teal
-            2: '#2b7', // Type 2 - Green
-            3: '#a47', // Type 3 - Purple
-            4: '#b52', // Type 4 - Orange
-            5: '#d33'  // Type 5 - Red
+            1: '#fff', // Type 1 - White
+            2: '#00f', // Type 2 - Blue
+            3: '#0f0', // Type 3 - Green
+            4: '#ff0', // Type 4 - Yellow
+            5: '#f00'  // Type 5 - Red
         };
         
         this.resize();
@@ -82,7 +82,6 @@ class Renderer {
         }
     }
 
-    // Convert screen coordinates to grid coordinates
     screenToGrid(screenX, screenY) {
         const gridX = Math.floor((screenX - this.offsetX) / this.cellSize);
         const gridY = Math.floor((screenY - this.offsetY) / this.cellSize);

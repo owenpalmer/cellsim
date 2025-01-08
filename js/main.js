@@ -2,19 +2,37 @@
 const grid = new Grid(100, 100);
 const canvas = document.getElementById('grid');
 const renderer = new Renderer(canvas, grid);
+const growth = new GrowthManager(grid);
 
 // UI elements
 const seedInput = document.getElementById('seed');
 const clearButton = document.getElementById('clear');
 const cellTypeSelect = document.getElementById('selected-type');
 
-// Track if grid needs redraw
+// Add simulation controls to HTML
+const controlsDiv = document.getElementById('controls');
+controlsDiv.insertAdjacentHTML('beforeend', `
+    <button id="play-pause">Play</button>
+    <button id="step">Step</button>
+    <span id="generation">Generation: 0</span>
+`);
+
+const playPauseButton = document.getElementById('play-pause');
+const stepButton = document.getElementById('step');
+const generationSpan = document.getElementById('generation');
+
+// Simulation state
+let isRunning = false;
 let needsRedraw = true;
+let generation = 0;
+let lastStepTime = 0;
+const stepInterval = 100; // ms between generations
+
+// Track if mouse is down for drawing
+let isMouseDown = false;
+let lastX = -1, lastY = -1;
 
 // Handle mouse input
-let isMouseDown = false;
-let lastX = -1, lastY = -1;  // Track last cell modified to prevent redundant updates
-
 canvas.addEventListener('mousedown', (e) => {
     isMouseDown = true;
     handleMouseInput(e);
@@ -43,7 +61,6 @@ function handleMouseInput(e) {
     
     const gridPos = renderer.screenToGrid(mouseX, mouseY);
     
-    // Only update if we're in bounds and haven't modified this cell yet
     if (gridPos.x >= 0 && gridPos.x < grid.width && 
         gridPos.y >= 0 && gridPos.y < grid.height &&
         (gridPos.x !== lastX || gridPos.y !== lastY)) {
@@ -55,32 +72,51 @@ function handleMouseInput(e) {
     }
 }
 
+// Handle simulation controls
+playPauseButton.addEventListener('click', () => {
+    isRunning = !isRunning;
+    playPauseButton.textContent = isRunning ? 'Pause' : 'Play';
+});
+
+stepButton.addEventListener('click', () => {
+    if (!isRunning) {
+        performStep();
+    }
+});
+
 // Handle clear button
 clearButton.addEventListener('click', () => {
     grid.clear();
+    generation = 0;
+    generationSpan.textContent = `Generation: ${generation}`;
     needsRedraw = true;
 });
 
 // Handle seed input
 seedInput.addEventListener('change', () => {
-    // We'll use this later for the growth algorithm
-    console.log('Seed changed:', seedInput.value);
+    const newSeed = parseInt(seedInput.value) || Date.now();
+    growth.setSeed(newSeed);
+    seedInput.value = newSeed;
 });
 
-// Performance monitoring
-let frameCount = 0;
-let lastTime = performance.now();
-let fps = 0;
+function performStep() {
+    if (growth.tick()) {
+        generation++;
+        generationSpan.textContent = `Generation: ${generation}`;
+        needsRedraw = true;
+    } else {
+        // No changes were made, pause simulation
+        isRunning = false;
+        playPauseButton.textContent = 'Play';
+    }
+}
 
 // Animation loop
 function animate(currentTime) {
-    // Update FPS counter
-    frameCount++;
-    if (currentTime - lastTime >= 1000) {
-        fps = frameCount;
-        frameCount = 0;
-        lastTime = currentTime;
-        console.log('FPS:', fps);
+    // Handle simulation steps
+    if (isRunning && currentTime - lastStepTime >= stepInterval) {
+        performStep();
+        lastStepTime = currentTime;
     }
 
     // Only render if needed
