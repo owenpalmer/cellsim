@@ -27,7 +27,10 @@ body {
 }
 
 .about-content {
-    padding: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     gap: 15px;
     align-items: center;
 }
@@ -44,13 +47,46 @@ body {
     border-radius: 5px 5px 0 0;
     cursor: move;
     font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toggle-panel {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0 5px;
+}
+
+.toggle-panel:hover {
+    color: #aaa;
+}
+
+.about-content {
+    display: block;
 }
 
 .panel-content {
-    padding: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: auto;
     display: flex;
     gap: 15px;
     align-items: center;
+    opacity: 1;
+    visibility: visible;
+    overflow: hidden;
+}
+
+.panel-content.hidden, .about-content.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 #probability-panel .panel-content {
@@ -71,7 +107,6 @@ button {
     padding: 5px 10px;
     border-radius: 3px;
     cursor: pointer;
-    transition: background 0.2s;
 }
 
 button:hover {

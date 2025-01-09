@@ -27,7 +27,7 @@ let initialY = 0;
 let currentX = 0;
 let currentY = 0;
 
-// Initialize panel positions from localStorage or defaults
+// Initialize panel positions and states from localStorage
 panels.forEach(panel => {
     const savedPos = localStorage.getItem(`${panel.id}-position`);
     if (savedPos) {
@@ -36,9 +36,30 @@ panels.forEach(panel => {
         panel.style.top = top;
         panel.style.right = 'auto'; // Clear any right positioning
     }
+
+    // Initialize panel visibility state
+    const isHidden = localStorage.getItem(`${panel.id}-hidden`) === 'true';
+    const content = panel.querySelector('.panel-content') || panel.querySelector('.about-content');
+    const toggleBtn = panel.querySelector('.toggle-panel');
+    
+    if (isHidden) {
+        content.classList.add('hidden');
+        toggleBtn.textContent = '+';
+    }
+    
+    // Add toggle functionality
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent dragging when clicking toggle
+        content.classList.toggle('hidden');
+        toggleBtn.textContent = content.classList.contains('hidden') ? '+' : '−';
+        localStorage.setItem(`${panel.id}-hidden`, content.classList.contains('hidden'));
+    });
     
     const header = panel.querySelector('.panel-header');
     header.addEventListener('mousedown', e => {
+        // Ignore if clicking the toggle button
+        if (e.target.classList.contains('toggle-panel')) return;
+        
         activePanel = panel;
         initialX = e.clientX - panel.offsetLeft;
         initialY = e.clientY - panel.offsetTop;
@@ -146,13 +167,6 @@ clearButton.addEventListener('click', () => {
     generationSpan.textContent = `Generation: ${generation}`;
     needsRedraw = true;
 });
-
-// Handle seed input
-// seedInput.addEventListener('change', () => {
-//     const newSeed = parseInt(seedInput.value);
-//     growth.setSeed(newSeed);
-//     seedInput.value = newSeed;
-// });
 
 function performStep() {
     if (growth.tick()) {
