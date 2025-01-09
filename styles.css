@@ -26,6 +26,18 @@ body {
     right: 10px;
 }
 
+.about-content {
+    padding: 15px;
+    gap: 15px;
+    align-items: center;
+}
+
+#about-panel {
+    top: 200px;
+    left: 10px;
+    width: 500px;
+}
+
 .panel-header {
     padding: 8px 12px;
     background: #222;

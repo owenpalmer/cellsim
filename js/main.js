@@ -5,7 +5,7 @@ const renderer = new Renderer(canvas, grid);
 const growth = new GrowthManager(grid);
 
 // UI elements
-const seedInput = document.getElementById('seed');
+// const seedInput = document.getElementById('seed');
 const clearButton = document.getElementById('clear');
 const cellTypeSelect = document.getElementById('selected-type');
 const playPauseButton = document.getElementById('play-pause');
@@ -148,11 +148,11 @@ clearButton.addEventListener('click', () => {
 });
 
 // Handle seed input
-seedInput.addEventListener('change', () => {
-    const newSeed = parseInt(seedInput.value) || Date.now();
-    growth.setSeed(newSeed);
-    seedInput.value = newSeed;
-});
+// seedInput.addEventListener('change', () => {
+//     const newSeed = parseInt(seedInput.value);
+//     growth.setSeed(newSeed);
+//     seedInput.value = newSeed;
+// });
 
 function performStep() {
     if (growth.tick()) {

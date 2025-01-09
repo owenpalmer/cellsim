@@ -8,7 +8,7 @@
     <div id="main-controls" class="panel">
         <div class="panel-header">Controls</div>
         <div class="panel-content">
-            <input type="number" id="seed" placeholder="Random Seed" value="1234">
+            <!-- <input type="number" id="seed" placeholder="Random Seed" value="1234"> -->
             <button id="clear">Clear Grid</button>
             <button id="play-pause">Play</button>
             <button id="step">Step</button>
@@ -16,11 +16,11 @@
             <div id="cell-types">
                 <label>Cell Type:</label>
                 <select id="selected-type">
-                    <option value="0">Type 0 (Terminal)</option>
-                    <option value="1">Type 1 (1 cell)</option>
-                    <option value="2">Type 2 (2 cells)</option>
-                    <option value="3">Type 3 (3 cells)</option>
-                    <option value="4">Type 4 (4 cells)</option>
+                    <option value="0">Type 0 🟥</option>
+                    <option value="1" selected="selected">Type 1 ⬜</option>
+                    <option value="2">Type 2 🟦</option>
+                    <option value="3">Type 3 🟩</option>
+                    <option value="4">Type 4 🟨</option>
                 </select>
             </div>
         </div>
@@ -32,46 +32,82 @@
             <table>
                 <tr>
                     <th>Parent</th>
-                    <th>→0</th>
-                    <th>→1</th>
-                    <th>→2</th>
-                    <th>→3</th>
-                    <th>→4</th>
+
+                    <th>→0🟥</th>
+                    <th>→1⬜</th>
+                    <th>→2🟦</th>
+                    <th>→3🟩</th>
+                    <th>→4🟨</th>
                 </tr>
                 <tr>
-                    <td>Type 1</td>
-                    <td><input type="number" data-parent="1" data-child="0" step="0.1" value="0.4"></td>
-                    <td><input type="number" data-parent="1" data-child="1" step="0.1" value="0.3"></td>
-                    <td><input type="number" data-parent="1" data-child="2" step="0.1" value="0.2"></td>
-                    <td><input type="number" data-parent="1" data-child="3" step="0.1" value="0.1"></td>
-                    <td><input type="number" data-parent="1" data-child="4" step="0.1" value="0.0"></td>
+                    <td>Type 0 🟥</td>
+                    <th>Zero</th>
+                    <th>Zero</th>
+                    <th>Zero</th>
+                    <th>Zero</th>
+                    <th>Zero</th>
                 </tr>
                 <tr>
-                    <td>Type 2</td>
-                    <td><input type="number" data-parent="2" data-child="0" step="0.1" value="0.2"></td>
-                    <td><input type="number" data-parent="2" data-child="1" step="0.1" value="0.4"></td>
-                    <td><input type="number" data-parent="2" data-child="2" step="0.1" value="0.2"></td>
-                    <td><input type="number" data-parent="2" data-child="3" step="0.1" value="0.1"></td>
+                    <td>Type 1 ⬜</td>
+                    <td><input type="number" data-parent="1" data-child="0" step="0.1" value="0.0"></td>
+                    <td><input type="number" data-parent="1" data-child="1" step="0.1" value="0.4"></td>
+                    <td><input type="number" data-parent="1" data-child="2" step="0.1" value="0.3"></td>
+                    <td><input type="number" data-parent="1" data-child="3" step="0.1" value="0.2"></td>
+                    <td><input type="number" data-parent="1" data-child="4" step="0.1" value="0.1"></td>
+                </tr>
+                <tr>
+                    <td>Type 2 🟦</td>
+                    <td><input type="number" data-parent="2" data-child="0" step="0.1" value="0.1"></td>
+                    <td><input type="number" data-parent="2" data-child="1" step="0.1" value="0.2"></td>
+                    <td><input type="number" data-parent="2" data-child="2" step="0.1" value="0.4"></td>
+                    <td><input type="number" data-parent="2" data-child="3" step="0.1" value="0.2"></td>
                     <td><input type="number" data-parent="2" data-child="4" step="0.1" value="0.1"></td>
                 </tr>
                 <tr>
-                    <td>Type 3</td>
-                    <td><input type="number" data-parent="3" data-child="0" step="0.1" value="0.0"></td>
+                    <td>Type 3 🟩</td>
+                    <td><input type="number" data-parent="3" data-child="0" step="0.1" value="0.5"></td>
                     <td><input type="number" data-parent="3" data-child="1" step="0.1" value="0.0"></td>
                     <td><input type="number" data-parent="3" data-child="2" step="0.1" value="0.0"></td>
-                    <td><input type="number" data-parent="3" data-child="3" step="0.1" value="0.5"></td>
+                    <td><input type="number" data-parent="3" data-child="3" step="0.1" value="0.0"></td>
                     <td><input type="number" data-parent="3" data-child="4" step="0.1" value="0.5"></td>
                 </tr>
                 <tr>
-                    <td>Type 4</td>
-                    <td><input type="number" data-parent="4" data-child="0" step="0.1" value="0.0"></td>
+                    <td>Type 4 🟨</td>
+                    <td><input type="number" data-parent="4" data-child="0" step="0.1" value="1.0"></td>
                     <td><input type="number" data-parent="4" data-child="1" step="0.1" value="0.0"></td>
                     <td><input type="number" data-parent="4" data-child="2" step="0.1" value="0.0"></td>
                     <td><input type="number" data-parent="4" data-child="3" step="0.1" value="0.0"></td>
-                    <td><input type="number" data-parent="4" data-child="4" step="0.1" value="1.0"></td>
+                    <td><input type="number" data-parent="4" data-child="4" step="0.1" value="0.0"></td>
                 </tr>
             </table>
             <div class="note">Higher numbers = higher chance. 0 = impossible.</div>
+        </div>
+    </div>
+
+    <div id="about-panel" class="panel">
+        <div class="panel-header">About</div>
+        <div class="about-content">
+            Welcome to my cellular growth simulator.
+            <h3>Cell Types</h3>
+            <ul>
+                <li>Type 0 🟥: Creates 0 new cells per generation</li>
+                <li>Type 1 ⬜: Creates 1 new cell per generation</li>
+                <li>Type 2 🟦: Creates 2 new cells per generation</li>
+                <li>Type 3 🟩: Creates 3 new cells per generation</li>
+                <li>Type 4 🟨: Creates 4 new cells per generation</li>
+            </ul>
+
+            Note: Number of cell types could be dynamic, but I haven't implemented it yet.
+
+            <h3>Growth Weights</h3>
+            <ul>
+                <li>The table shows probabilities of what type of cell each parent creates</li>
+                <li>Higher numbers = more likely to create that type</li>
+                <li>0 = impossible to create that type</li>
+                <li>Weights don't need to sum to 1</li>
+                <li>Edit weights during simulation to see different patterns</li>
+            </ul>
+
         </div>
     </div>
 
