@@ -3,11 +3,11 @@ class GrowthManager {
         this.grid = grid;
         this.rng = null;
         this.weights = {
-            1: [0.4, 0.3, 0.2, 0.1, 0.0], // Type 1 -> [1,2,3,4,5]
-            2: [0.2, 0.4, 0.2, 0.1, 0.1], // Type 2 -> [1,2,3,4,5]
-            3: [0.0, 0.0, 0.0, 0.5, 0.5], // Type 3 -> [1,2,3,4,5]
-            4: [0.0, 0.0, 0.0, 0.0, 1.0]  // Type 4 -> [1,2,3,4,5]
-            // Type 5 doesn't grow
+            1: [0.0, 0.4, 0.3, 0.2, 0.1], // Type 1 -> [0,1,2,3,4]
+            2: [0.1, 0.2, 0.4, 0.2, 0.1], // Type 2 -> [0,1,2,3,4]
+            3: [0.5, 0.0, 0.0, 0.0, 0.5], // Type 3 -> [0,1,2,3,4]
+            4: [1.0, 0.0, 0.0, 0.0, 0.0]  // Type 4 -> [0,1,2,3,4]
+            // Type 0 doesn't grow
         };
         this.setSeed(Date.now());
     }
@@ -43,7 +43,7 @@ class GrowthManager {
 
     // Determine new cell type based on parent type and weights
     determineChildType(parentType) {
-        if (parentType === 5) return null; // Type 5 doesn't grow
+        if (parentType === 0 || parentType === null) return null; // Type 0 and empty cells don't grow
         
         const weights = this.weights[parentType];
         const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
@@ -54,12 +54,12 @@ class GrowthManager {
         const rand = this.rng.next() * totalWeight;
         let sum = 0;
         
-        for (let type = 1; type <= 5; type++) {
-            sum += weights[type - 1];
+        for (let type = 0; type <= 4; type++) {
+            sum += weights[type];
             if (rand < sum) return type;
         }
         
-        return 5; // Fallback to type 5 (should never happen due to totalWeight check)
+        return 0; // Fallback to type 0
     }
 
     // Process one generation
@@ -74,7 +74,7 @@ class GrowthManager {
                     const growthCells = this.getGrowthCells(x, y, cellType);
                     for (const cell of growthCells) {
                         const newType = this.determineChildType(cellType);
-                        if (newType) {
+                        if (newType !== null) {
                             newCells.add({ x: cell.x, y: cell.y, type: newType });
                         }
                     }
@@ -92,8 +92,8 @@ class GrowthManager {
 
     // Update weight for a specific parent->child relationship
     setWeight(parentType, childType, weight) {
-        if (parentType >= 1 && parentType <= 4 && childType >= 1 && childType <= 5) {
-            this.weights[parentType][childType - 1] = Math.max(0, weight);
+        if (parentType >= 1 && parentType <= 4 && childType >= 0 && childType <= 4) {
+            this.weights[parentType][childType] = Math.max(0, weight);
         }
     }
 }

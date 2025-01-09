@@ -4,12 +4,12 @@ class Renderer {
         this.ctx = canvas.getContext('2d');
         this.grid = grid;
         this.cellColors = {
-            0: '#111', // Empty cell
-            1: '#fff', // Type 1 - White
-            2: '#00f', // Type 2 - Blue
-            3: '#0f0', // Type 3 - Green
-            4: '#ff0', // Type 4 - Yellow
-            5: '#f00'  // Type 5 - Red
+            '-1': '#000', // Empty cell - Black
+            0: '#f00',    // Type 0 - Red (Terminal)
+            1: '#fff',    // Type 1 - White
+            2: '#00f',    // Type 2 - Blue
+            3: '#0f0',    // Type 3 - Green
+            4: '#ff0',    // Type 4 - Yellow
         };
         
         this.resize();
@@ -41,14 +41,15 @@ class Renderer {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Draw cells by type to minimize state changes
-        for (let type = 1; type <= 5; type++) {
+        for (let type = -1; type <= 4; type++) {
             this.ctx.fillStyle = this.cellColors[type];
             this.ctx.beginPath();
             
             // Find all cells of this type
             for (let y = 0; y < this.grid.height; y++) {
                 for (let x = 0; x < this.grid.width; x++) {
-                    if (this.grid.getCell(x, y) === type) {
+                    const cellValue = this.grid.cells[y * this.grid.width + x];
+                    if (cellValue === type) {
                         const screenX = this.offsetX + (x * this.cellSize);
                         const screenY = this.offsetY + (y * this.cellSize);
                         this.ctx.rect(screenX, screenY, this.cellSize, this.cellSize);

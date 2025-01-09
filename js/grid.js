@@ -2,25 +2,26 @@ class Grid {
     constructor(width, height) {
         this.width = width;
         this.height = height;
-        this.cells = new Array(width * height).fill(0);
+        this.cells = new Array(width * height).fill(-1); // -1 represents empty cells
     }
 
     getCell(x, y) {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
             return null;
         }
-        return this.cells[y * this.width + x];
+        const value = this.cells[y * this.width + x];
+        return value === -1 ? null : value;
     }
 
     setCell(x, y, value) {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
             return;
         }
-        this.cells[y * this.width + x] = value;
+        this.cells[y * this.width + x] = value === null ? -1 : value;
     }
 
     clear() {
-        this.cells.fill(0);
+        this.cells.fill(-1);
     }
 
     // Convert screen coordinates to grid coordinates
@@ -48,6 +49,6 @@ class Grid {
 
     // Get empty neighboring cells
     getEmptyNeighbors(x, y) {
-        return this.getNeighbors(x, y).filter(n => n.value === 0);
+        return this.getNeighbors(x, y).filter(n => n.value === null);
     }
 }
